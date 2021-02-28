@@ -4,6 +4,8 @@ require 'bundler/setup'
 require 'discordrb'
 require 'yaml'
 
+# force update test
+
 # The main bot
 # All individual crystals will be submodules of this; this gives them access to the main 
 # bot object through a constant, as well as a constant containing the path to the data folder
