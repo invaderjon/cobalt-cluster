@@ -29,6 +29,12 @@ class CommandRunner
   def kill_cmd()
     pid = @cur_cmd_pid # avoid multi-threaded shenanies
     unless pid.nil?
+      if windows?
+        success = system("taskkill /F /pid #{pid}")
+        print "ERROR: Failed to kill #{pid}" unless success
+        return nil
+      end
+    
       begin
         Process.kill('INT', pid)
       rescue Errno::ESRCH, RangeError
@@ -45,6 +51,11 @@ class CommandRunner
         puts "WARNING: There are no child processes (tried pid: #{pid})"
       end
     end
+  end
+  
+  def windows?()
+    # windows can't run certain commands
+    return (/mswin|mingw|bccwin|wince|emx/) =~ RUBY_PLATFORM
   end
 end
 
